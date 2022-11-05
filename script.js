@@ -1,3 +1,11 @@
+const buttons = document.querySelectorAll('.btn')
+const score = document.createElement('div')
+const body = document.querySelector('body')
+
+let playerScore = 0
+let computerScore = 0
+
+
 function getComputerChoice() {
     let randomInt = Math.floor(Math.random() * 3)
     if (randomInt === 0) {
@@ -29,14 +37,31 @@ function playRound(playerSelection) {
     }
 }
 
-function game() {
-    for (let i=0; i < 5; i++) {
-        let playerInput = prompt("Input: ").toLowerCase();
-        console.log("You choice: " + playerInput);
-        
-        return playRound(playerInput);
-    }
-}
-
-// console.log(playRound("Scissors"))
-game()
+buttons.forEach((b) => {
+    b.addEventListener('click', (e) => {
+        result = playRound(e.target.innerText);
+        console.log(result)
+        if (result === "you won") {
+            playerScore += 1;
+            score.innerText = `${playerScore} : ${computerScore}`
+            body.append(score)
+        } else if (result === "you lost") {
+            computerScore += 1;
+            score.innerText = `${playerScore} : ${computerScore}`
+            body.append(score)
+        } else if (result === "tie") {
+            score.innerText = "TIE";
+            body.appendChild(score)
+        }
+        if (playerScore === 5) {
+            score.innerText = "You won";
+            body.append(score);
+            playerScore = 0;
+            computerScore = 0;
+        } else if (computerScore === 5) {
+            score.innerText = "You lost";
+            playerScore = 0;
+            computerScore = 0;
+        }
+    });
+})
